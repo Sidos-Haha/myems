@@ -5,6 +5,24 @@ import struct
 ########################################################################################################################
 
 
+# swap adjacent bytes of 16bits (2bytes) data,
+# ab => ba
+def byte_swap_16_bit(x):
+
+  x_type = type(x)
+  
+  if x_type is float:
+    x = struct.unpack('>H', struct.pack('>e', x))[0]
+
+  a = (x >> 8) & 0xFF 
+  b = (x << 8) & 0xFF00
+
+  if x_type is float:  
+    return struct.unpack('>e', struct.pack('>H', b | a))[0]
+  else:
+    return b | a
+
+
 # swap adjacent bytes of 32bits (4bytes) data,
 # abcd => badc
 def byte_swap_32_bit(x):

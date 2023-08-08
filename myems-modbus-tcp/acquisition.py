@@ -8,7 +8,7 @@ from decimal import Decimal
 import mysql.connector
 from modbus_tk import modbus_tcp
 import config
-from byte_swap import byte_swap_32_bit, byte_swap_64_bit
+from byte_swap import byte_swap_16_bit, byte_swap_32_bit, byte_swap_64_bit
 
 
 ########################################################################################################################
@@ -209,10 +209,12 @@ def process(logger, data_source_id, host, port):
                     continue
 
                 if address['byte_swap']:
-                    if address['number_of_registers'] == 2:
+                    if address['number_of_registers'] == 1:
+                        value = byte_swap_16_bit(result[0])
+                    elif address['number_of_registers'] == 2:
                         value = byte_swap_32_bit(result[0])
                     elif address['number_of_registers'] == 4:
-                        value = byte_swap_64_bit(result[0])
+                        value = byte_swap_64_bit(result[0])   
                     else:
                         value = result[0]
                 else:
